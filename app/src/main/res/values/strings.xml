@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Khmer Vehicle Scanner</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_required_message">We need Camera permission to scan your plate numbe, please eanble it in the settings.</string>
+    <string name="enable">Enable</string>
+    <string name="close">Close</string>
+</resources>
