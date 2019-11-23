@@ -4,4 +4,10 @@
     <string name="permission_required_message">The app needs Camera permission to scan your plate number, please enable it in the application settings.</string>
     <string name="enable">Enable</string>
     <string name="close">Close</string>
+    <string name="scan_plate_qr">Scan Plate QR</string>
+    <string name="align_frame_with_qr_in_the_plate_number">Align frame with QR in the plate number</string>
+    <string name="scan_your_vehicle_here">Scan your vehicle here</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+
 </resources>

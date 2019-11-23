@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ឧបករណ៍ស្កេនស្លាកលេខ</string>
+    <string name="permission_required">ទាមទារការអនុញ្ញាត</string>
+    <string name="permission_required_message">កម្មវិធីត្រូវការការអនុញ្ញាតកាមេរ៉ាដើម្បីស្កេន ស្លាកលេខ របស់អ្នកសូមមេត្តាបើកវានៅក្នុងការកំណត់កម្មវិធី។</string>
+    <string name="enable">បើកការអនុញ្ញាត</string>
+    <string name="close">បិទ</string>
+    <string name="scan_plate_qr">ស្កេនស្លាកលេខ</string>
+    <string name="align_frame_with_qr_in_the_plate_number">តម្រឹមស៊ុមជាមួយ QR ក្នុងលេខផ្លាក</string>
+    <string name="scan_your_vehicle_here">ស្កេនយានយន្តរបស់អ្នកនៅទីនេះ</string>
+
+    <string name="home">ស្កេន</string>
+    <string name="settings">ការកំណត់</string>
+
+</resources>
