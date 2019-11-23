@@ -100,11 +100,6 @@ class HomeFragment : Fragment() {
             if (isCameraStarted) {
                 preview?.enableTorch(!(preview?.isTorchOn ?: false))
             } else {
-                animateFab(fabScan) {
-                    fabScan.setIconResource(R.drawable.ic_flash)
-                    animateFab(fabScan, 500)
-                }
-
                 requestCamera()
             }
         }
@@ -288,6 +283,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun startCamera() {
+
+        animateFab(fabScan) {
+            fabScan.setIconResource(R.drawable.ic_flash)
+            animateFab(fabScan, 500)
+        }
+
+
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetAspectRatio(AspectRatio.RATIO_16_9)
             setLensFacing(CameraX.LensFacing.BACK)
