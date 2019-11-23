@@ -69,6 +69,7 @@ class ScanFocusView @JvmOverloads constructor(
     }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        path.reset()
 
         val frameWidth = w.toFloat() / 2f
 
@@ -105,6 +106,8 @@ class ScanFocusView @JvmOverloads constructor(
 
             start()
         }
+
+        path.close()
     }
 
 

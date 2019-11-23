@@ -254,6 +254,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         compositeDisposable.clear()
+
     }
 
     private fun validateQrCode(text: String): Boolean {
@@ -282,8 +283,11 @@ class HomeFragment : Fragment() {
         textureViewCamera.setTransform(matrix)
     }
 
-    private fun startCamera() {
 
+
+    private fun startCamera() {
+        // Set secure flags so it won't show in recent apps
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         animateFab(fabScan) {
             fabScan.setIconResource(R.drawable.ic_flash)
             animateFab(fabScan, 500)
