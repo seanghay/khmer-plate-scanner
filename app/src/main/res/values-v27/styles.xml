@@ -3,7 +3,7 @@
 
     <style name="VehicleScanner" parent="App.Base">
         <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:navigationBarColor">#10FFFFFF</item>
+        <item name="android:navigationBarColor">#1A000000</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

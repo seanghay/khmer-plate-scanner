@@ -13,9 +13,10 @@ import android.provider.Settings
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
 import androidx.camera.core.*
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
@@ -23,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -40,6 +42,8 @@ class HomeFragment : Fragment() {
     private val analyzer = QRcodeAnalyzer()
     private val compositeDisposable = CompositeDisposable()
     private val adapter = VehicleAdapter(emptyList())
+    private var isCameraStarted = false
+    private var preview: Preview? = null
 
     private val pattern = Regex("http[s]?://ts.mpwt.gov.kh/\\w+")
 
@@ -61,16 +65,23 @@ class HomeFragment : Fragment() {
                 sheet.recyclerView.updatePadding(
                     bottom = sheet.recyclerView.paddingBottom + insets.systemWindowInsetBottom
                 )
+                nav.updatePadding(bottom = insets.systemWindowInsetBottom)
             }
 
             viewModel.isLoading.observe(viewLifecycleOwner, Observer {
                 progressBar.isGone = !it
             })
+
+            fabScan.isEnabled = false
+            fabScan.visibility = View.INVISIBLE
+            fabScan.scaleX = 0f
+            fabScan.scaleY = 0f
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        initNav()
 
         viewModel.showSheet.observe(viewLifecycleOwner, Observer {
             showSheet(it)
@@ -80,9 +91,24 @@ class HomeFragment : Fragment() {
             viewModel.showSheet.value = false
         }
 
-        buttonScan?.setOnClickListener {
-            requestCamera()
+
+        fabScan.post {
+            animateFab(fabScan)
         }
+
+        fabScan.setOnClickListener {
+            if (isCameraStarted) {
+                preview?.enableTorch(!(preview?.isTorchOn ?: false))
+            } else {
+                animateFab(fabScan) {
+                    fabScan.setIconResource(R.drawable.ic_flash)
+                    animateFab(fabScan, 500)
+                }
+
+                requestCamera()
+            }
+        }
+
         viewModel.scanStarted.observe(viewLifecycleOwner, Observer {
             animate(!it)
             textureViewCamera?.isVisible = it
@@ -91,8 +117,8 @@ class HomeFragment : Fragment() {
         textureViewCamera?.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateTransforms()
         }
+
         analyzer.getResultFlowable()
-            .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .filter(::validateQrCode)
             .subscribe {
@@ -103,6 +129,61 @@ class HomeFragment : Fragment() {
                     }
 
             }.addTo(compositeDisposable)
+
+    }
+
+    private fun initNav() {
+        nav.setOnNavigationItemSelectedListener {
+            if (it.itemId == R.id.settings) {
+                Toast.makeText(requireContext(), "Available sooooon! xD", Toast.LENGTH_SHORT).show()
+            }
+            false
+        }
+    }
+
+    private fun animateFab(
+        it: ExtendedFloatingActionButton,
+        delay: Long = 0L,
+        done: () -> Unit = {}
+    ) {
+
+        val interpolator = AccelerateDecelerateInterpolator()
+
+        if (it.isEnabled) {
+            ViewCompat.animate(it)
+                .scaleX(0f)
+                .scaleY(0f)
+                .setStartDelay(delay)
+                .setInterpolator(interpolator)
+                .withStartAction {
+                    it.isEnabled = false
+                }
+                .withEndAction {
+                    it.visibility = View.INVISIBLE
+                    it.isEnabled = false
+                }
+                .setDuration(250L)
+                .withEndAction(done)
+                .setUpdateListener { v ->
+                    nav.curveRadius = (v.height / 2f) * v.scaleX
+                }
+                .start()
+        } else {
+            it.visibility = View.VISIBLE
+            it.isEnabled = true
+
+            ViewCompat.animate(it)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setStartDelay(delay)
+                .withEndAction(done)
+                .setInterpolator(interpolator)
+                .setDuration(250L)
+                .setUpdateListener { v ->
+                    nav.curveRadius = (v.height / 2f) * v.scaleX
+                }
+                .start()
+        }
     }
 
     private fun request(url: String) {
@@ -222,6 +303,9 @@ class HomeFragment : Fragment() {
             updateTransforms()
         }
 
+        this.preview = preview
+
+
         val analysisConfig = ImageAnalysisConfig.Builder().apply {
             setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
         }.build()
@@ -232,10 +316,7 @@ class HomeFragment : Fragment() {
         CameraX.bindToLifecycle(this, preview, analysis)
 
         viewModel.scanStarted.value = true
-        buttonFlash?.setOnClickListener {
-            preview.enableTorch(!preview.isTorchOn)
-        }
-
+        isCameraStarted = true
     }
 
 
@@ -259,7 +340,7 @@ class HomeFragment : Fragment() {
                 duration = 300
             }
 
-        val infos = arrayOf<View>(scanQr, scanQrDesc, buttonFlash).map {
+        val infos = arrayOf<View>(scanQr, scanQrDesc).map {
             it.visibility = View.VISIBLE
 
             if (show) {
@@ -298,27 +379,14 @@ class HomeFragment : Fragment() {
                 duration = 200
             }
 
-        val buttonAnimator =
-            ObjectAnimator.ofPropertyValuesHolder(
-                buttonScan,
-                alphaHolder,
-                translationY
-            ).apply {
-                duration = 250
-            }
-
         val animatorSet = AnimatorSet().apply {
             interpolator = AccelerateDecelerateInterpolator()
-
-            doOnEnd {
-                buttonScan.isEnabled = show
-            }
-
             play(plateAnimator).before(titleAnimator)
             play(titleAnimator).before(descAnimator)
-            play(descAnimator).before(buttonAnimator)
-            infos.forEach { play(it).after(buttonAnimator) }
+            play(descAnimator).after(titleAnimator)
+            infos.forEach { play(it).after(descAnimator) }
             play(focusAnimator).after(infos.last())
+
         }
 
         animatorSet.start()

@@ -95,49 +95,12 @@
             android:text="Scan your vehicle here"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="?android:attr/textColorSecondary"
-            app:layout_constraintBottom_toTopOf="@+id/buttonScan"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonScan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Scan"
-            app:icon="@drawable/ic_qr"
-            app:iconSize="18dp"
-            app:iconTint="?attr/colorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDesc" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/cameraControl"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonFlash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="18dp"
-                android:text="Flashlight"
-                app:icon="@drawable/ic_flash"
-                app:iconSize="18dp"
-                app:iconTint="?attr/colorOnPrimary" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -148,6 +111,36 @@
             app:layout_constraintEnd_toEndOf="@id/focusView"
             app:layout_constraintStart_toStartOf="@id/focusView"
             app:layout_constraintTop_toTopOf="@id/focusView" />
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fabScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="?colorPrimary"
+            app:elevation="8dp"
+            app:icon="@drawable/ic_qr"
+            app:layout_constraintBottom_toTopOf="@id/nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/nav"
+            app:rippleColor="?attr/colorAccent"
+
+            />
+
+        <com.seanghay.khmervehiclescanner.CurveBottomNavigationView
+            android:id="@+id/nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:minHeight="64dp"
+            app:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
