@@ -1,12 +1,12 @@
 <resources>
 
-    <style name="App.Base" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="App.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/orange_light</item>
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorSecondary">@color/red_light</item>
         <item name="colorSecondaryVariant">@color/red</item>
-        <item name="colorSurface">@color/brand_black</item>
+<!--        <item name="colorSurface">@color/brand_black</item>-->
         <item name="android:fontFamily">@font/overpass</item>
         <item name="textAppearanceButton">@style/TextAppearance.VehicleScanner.Button</item>
     </style>
