@@ -6,11 +6,27 @@
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorSecondary">@color/red_light</item>
         <item name="colorSecondaryVariant">@color/red</item>
-<!--        <item name="colorSurface">@color/brand_black</item>-->
-        <item name="android:fontFamily">@font/overpass</item>
+        <!--        <item name="colorSurface">@color/brand_black</item>-->
+        <item name="fontFamily">@font/overpass</item>
         <item name="textAppearanceButton">@style/TextAppearance.VehicleScanner.Button</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
     </style>
 
+    <style name="TextAppearance.MaterialComponents.Overline.NoSpacing">
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Body2.KM" >
+        <item name="fontFamily">@font/khmer</item>
+        <item name="android:fontFamily">@font/khmer</item>
+    </style>
 
     <style name="VehicleScanner" parent="App.Base" />
 
@@ -19,6 +35,22 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="FullScreenDialogStyle" parent="ThemeOverlay.AppCompat.Dialog">
+
+        <item name="android:windowNoTitle">true</item>
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- This is important! Don't forget to set window background -->
+        <item name="android:windowBackground">?attr/colorSurface</item>
+
+        <!-- Additionally if you want animations when dialog opening -->
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+
+    </style>
 
 </resources>
 

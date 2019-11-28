@@ -4,15 +4,29 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
+    signingConfigs {
+        def properties = new Properties()
+        if (project.rootProject.file('local.properties').canRead()) {
+            properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        }
+
+        release {
+            storeFile file('/Users/seanghay/Downloads/kvscanner.jks')
+            storePassword properties.getProperty('STORE_PASSWORD')
+            keyAlias = properties.getProperty('KEY_ALIAS')
+            keyPassword properties.getProperty('KEY_PASSWORD')
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.seanghay.khmervehiclescanner"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.3"
+        versionCode 6
+        versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
@@ -29,6 +43,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -65,6 +80,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'androidx.preference:preference:1.1.0'
 
     implementation 'org.jsoup:jsoup:1.12.1'
 

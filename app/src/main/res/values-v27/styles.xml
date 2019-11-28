@@ -5,5 +5,8 @@
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">#1A000000</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
     </style>
+
 </resources>

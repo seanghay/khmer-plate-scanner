@@ -13,7 +13,6 @@ import android.provider.Settings
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -23,6 +22,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,6 +107,9 @@ class HomeFragment : Fragment() {
         viewModel.scanStarted.observe(viewLifecycleOwner, Observer {
             animate(!it)
             textureViewCamera?.isVisible = it
+
+            if (it) fabScan.setIconResource(R.drawable.ic_flash)
+            else fabScan.setIconResource(R.drawable.ic_qr)
         })
 
         textureViewCamera?.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
@@ -125,12 +128,18 @@ class HomeFragment : Fragment() {
 
             }.addTo(compositeDisposable)
 
+
+
+        if (savedInstanceState != null && !isCameraStarted) {
+            requestCamera()
+        }
+
     }
 
     private fun initNav() {
         nav.setOnNavigationItemSelectedListener {
             if (it.itemId == R.id.settings) {
-                Toast.makeText(requireContext(), "Available sooooon! xD", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.home_to_dialog_settings)
             }
             false
         }
@@ -196,7 +205,8 @@ class HomeFragment : Fragment() {
 
     private fun parseHtml(html: String) {
         val doc = Jsoup.parse(html)
-        val english = doc.select("#english")
+        val english = doc.select("#" + getString(R.string.tag_lang))
+
         val rows = english.select("table tbody tr")
 
         val values = rows.map {
@@ -231,10 +241,12 @@ class HomeFragment : Fragment() {
                 .start()
 
         } else {
+
             if (sheet.visibility == View.GONE) return
 
             scrim.visibility = View.VISIBLE
             sheet.visibility = View.VISIBLE
+            sheet.alpha = 0f
 
             sheet.animate().translationY(sheet.height.toFloat())
                 .setDuration(200)
@@ -245,6 +257,7 @@ class HomeFragment : Fragment() {
                 .withEndAction {
                     sheet.visibility = View.GONE
                     scrim.visibility = View.GONE
+                    sheet.alpha = 1f
                 }
                 .start()
         }
@@ -284,15 +297,14 @@ class HomeFragment : Fragment() {
     }
 
 
-
     private fun startCamera() {
         // Set secure flags so it won't show in recent apps
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+
         animateFab(fabScan) {
             fabScan.setIconResource(R.drawable.ic_flash)
             animateFab(fabScan, 500)
         }
-
 
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetAspectRatio(AspectRatio.RATIO_16_9)
@@ -389,10 +401,8 @@ class HomeFragment : Fragment() {
             interpolator = AccelerateDecelerateInterpolator()
             play(plateAnimator).before(titleAnimator)
             play(titleAnimator).before(descAnimator)
-            play(descAnimator).after(titleAnimator)
             infos.forEach { play(it).after(descAnimator) }
             play(focusAnimator).after(infos.last())
-
         }
 
         animatorSet.start()

@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-printconfiguration "build/outputs/mapping/configuration.txt"
+-keep class * extends androidx.fragment.app.Fragment {}
+-repackageclasses 'o'
+
+

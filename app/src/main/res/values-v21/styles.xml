@@ -4,7 +4,10 @@
     <style name="VehicleScanner" parent="App.Base">
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">#1A000000</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
     </style>
+
 
     <style name="TextAppearance.VehicleScanner.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:letterSpacing">0</item>

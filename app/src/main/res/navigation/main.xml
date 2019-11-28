@@ -10,14 +10,22 @@
         android:name="com.seanghay.khmervehiclescanner.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
+
         <action
-            android:id="@+id/action_home_to_dialogInfo"
-            app:destination="@id/dialogInfo" />
+            android:id="@+id/home_to_dialog_settings"
+            app:destination="@id/dialog_settings"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
-    <dialog android:name="com.seanghay.khmervehiclescanner.InfoDialogFragment"
-        tools:layout="@layout/dialog_fragment_info"
-        android:id="@+id/dialogInfo"
-        />
+
+    <fragment
+        android:id="@+id/dialog_settings"
+        android:name="com.seanghay.khmervehiclescanner.SettingsDialogFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/dialog_fragment_settings" />
+
 
 </navigation>
