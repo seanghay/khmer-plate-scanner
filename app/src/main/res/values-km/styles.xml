@@ -10,11 +10,16 @@
         <item name="colorSecondaryVariant">@color/red</item>
         <!--        <item name="colorSurface">@color/brand_black</item>-->
         <item name="fontFamily">@font/khmer</item>
+        <item name="android:fontFamily">@font/khmer</item>
+
         <item name="textAppearanceButton">@style/TextAppearance.VehicleScanner.Button</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline.NoSpacing</item>
-    </style>
+        <item name="textAppearanceOverline">
+            @style/TextAppearance.MaterialComponents.Overline.NoSpacing
+        </item>
+        <item name="textAppearanceBody2">@style/TextAppearance.AppCompat.Body2.KM</item>
 
+    </style>
 
 
 </resources>
